@@ -1,3 +1,3 @@
-module github.com/yura-under-review/ports-doamin-service
+module github.com/yura-under-review/ports-domain-service
 
 go 1.16
