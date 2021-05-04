@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres
+    container_name: postgresdb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: ports-db
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./local/postgresql/data:/var/lib/postgresql/data
+      - $PWD/initdb.sql:/docker-entrypoint-initdb.d/init_tables.sql
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+
+    volumes:
+      - $PWD/pgadmin:/var/lib/pgadmin
+
+    ports:
+      - 5050:80
+
+    restart: unless-stopped
+    depends_on:
+      - postgres
