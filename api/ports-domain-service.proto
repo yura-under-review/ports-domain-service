@@ -18,7 +18,7 @@ message PortInfo {
   repeated string timezones = 8;
   repeated string unlocks = 9;
   string code = 10;
-  Coordinate coordinate = 11;
+  optional Coordinate coordinate = 11;
 }
 
 message PortInfoRequest {
