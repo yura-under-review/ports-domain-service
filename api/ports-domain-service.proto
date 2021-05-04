@@ -17,7 +17,7 @@ message PortInfo {
   repeated string regions = 7;
   repeated string timezones = 8;
   repeated string unlocks = 9;
-  int32 string = 10;
+  string code = 10;
   Coordinate coordinate = 11;
 }
 
