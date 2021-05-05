@@ -46,6 +46,8 @@ func (r *Resolver) BatchUpsertPorts(ctx context.Context, req *api.BatchUpsertPor
 		return nil, errors.New("failed to upsert ports")
 	}
 
+	log.Debugf("request was successfully processed [Nports: %d]", len(req.Ports))
+
 	return &api.BatchUpsertPortsResponse{
 		FailedPorts: nil,
 	}, nil

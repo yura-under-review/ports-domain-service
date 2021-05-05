@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/yura-under-review/ports-domain-service/opts"
 	"os"
 	"os/signal"
 	"strings"
@@ -23,9 +24,9 @@ const (
 
 func main() {
 
-	// TODO: get config from envs
+	config := opts.LoadConfigFromEnv()
 
-	initLogger("DEBUG")
+	initLogger(config.LogLevel, config.PrettyLogs)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	wg := sync.WaitGroup{}
@@ -33,22 +34,15 @@ func main() {
 	setupGracefulShutdown(cancel)
 
 	// TODO: replace with envs
-	repo := repository.New(repository.Config{
-		User:           "postgres",
-		Password:       "pass",
-		Host:           "localhost",
-		Port:           5432,
-		DatabaseName:   "ports-db",
-		MaxConnections: 10,
-		SSL:            false,
-	})
+	repo := repository.New(config.Postgres)
 	if err := repo.Init(ctx); err != nil {
 		log.Fatalf("failed to initialize repository: %v", err)
 	}
+	defer repo.Close()
 
 	// initializing gRPC
 	resolver := grpc.NewResolver(repo)
-	server := grpc.NewServer(":8081", resolver)
+	server := grpc.NewServer(config.GRPC, resolver)
 
 	if err := server.Run(ctx, &wg); err != nil {
 		log.Fatalf("failed to run grpc servier: %v", err)
@@ -59,7 +53,7 @@ func main() {
 	wg.Wait()
 }
 
-func initLogger(lvl string) {
+func initLogger(lvl string, prettyLogs bool) {
 
 	switch strings.ToUpper(lvl) {
 	case INFO:
@@ -75,7 +69,7 @@ func initLogger(lvl string) {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	log.SetFormatter(&log.JSONFormatter{PrettyPrint: false})
+	log.SetFormatter(&log.JSONFormatter{PrettyPrint: prettyLogs})
 	log.SetOutput(os.Stderr)
 }
 

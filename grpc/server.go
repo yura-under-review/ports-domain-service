@@ -17,9 +17,9 @@ type Server struct {
 	resolver *Resolver
 }
 
-func NewServer(addr string, resolver *Resolver) *Server {
+func NewServer(config Config, resolver *Resolver) *Server {
 	return &Server{
-		addr:     addr,
+		addr:     config.Address,
 		resolver: resolver,
 	}
 }
@@ -52,4 +52,8 @@ func (srv *Server) Run(ctx context.Context, wg *sync.WaitGroup) error {
 	}()
 
 	return nil
+}
+
+func (srv *Server) Close() {
+	srv.s.GracefulStop()
 }

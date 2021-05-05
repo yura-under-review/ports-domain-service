@@ -16,25 +16,20 @@ type (
 	}
 )
 
-// TODO put back country field
-
 const UpsertPortQuery = `insert into ports (symbol, name, country, province, city, alias, regions, timezones, unlocks, code, lat, lon)
 values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-on conflict (symbol) do update
-set name=excluded.name,
-province=excluded.province,
-city=excluded.city,
-alias=excluded.alias,
-regions=excluded.regions,
-timezones=excluded.timezones,
-unlocks=excluded.unlocks,
-code=excluded.code,
-lat=excluded.lat,
-lon=excluded.lon
-;
+on conflict (symbol) do update set 
+	name=excluded.name,
+	province=excluded.province,
+	city=excluded.city,
+	alias=excluded.alias,
+	regions=excluded.regions,
+	timezones=excluded.timezones,
+	unlocks=excluded.unlocks,
+	code=excluded.code,
+	lat=excluded.lat,
+	lon=excluded.lon;
 `
-
-// on conflict on constraint ports_symbol_unq do nothing
 
 func New(config Config) *Repository {
 	return &Repository{
