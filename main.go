@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/yura-under-review/ports-domain-service/opts"
 	"os"
 	"os/signal"
@@ -25,6 +26,7 @@ const (
 func main() {
 
 	config := opts.LoadConfigFromEnv()
+	fmt.Printf("%#v\n", config)
 
 	initLogger(config.LogLevel, config.PrettyLogs)
 
