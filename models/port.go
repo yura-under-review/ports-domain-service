@@ -4,19 +4,19 @@ type (
 	PortInfo struct {
 		Symbol     string
 		Name       string
+		Country    string
 		City       string
 		Province   string
-		Country    string
 		Alias      []string
 		Regions    []string
 		Timezones  []string
 		Unlocks    []string
-		Code       int
-		Coordinate Coordinate
+		Code       string
+		Coordinate *Coordinate
 	}
 
 	Coordinate struct {
-		Latitude  float64
-		Longitude float64
+		Latitude  float32
+		Longitude float32
 	}
 )

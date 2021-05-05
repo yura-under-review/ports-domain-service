@@ -11,7 +11,6 @@ import (
 )
 
 type PortsRepository interface {
-	PortUpsert(context.Context, *models.PortInfo) error
 	BatchPortUpsert(context.Context, []*models.PortInfo) error
 }
 
@@ -30,7 +29,7 @@ func NewResolver(repo PortsRepository) *Resolver {
 func (r *Resolver) UpsertPort(ctx context.Context, req *api.PortInfoRequest) (*api.PortInfoResponse, error) {
 	modelPort := transform.ToModelPort(req.Port)
 
-	if err := r.repo.PortUpsert(ctx, modelPort); err != nil {
+	if err := r.repo.BatchPortUpsert(ctx, []*models.PortInfo{modelPort}); err != nil {
 		log.Errorf("faield ot upsert ports: %v", err)
 		return nil, errors.New("failed to upsert ports")
 	}

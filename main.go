@@ -32,8 +32,17 @@ func main() {
 
 	setupGracefulShutdown(cancel)
 
-	repo := repository.New()
-	if err := repo.Init(); err != nil {
+	// TODO: replace with envs
+	repo := repository.New(repository.Config{
+		User:           "postgres",
+		Password:       "pass",
+		Host:           "localhost",
+		Port:           5432,
+		DatabaseName:   "ports-db",
+		MaxConnections: 10,
+		SSL:            false,
+	})
+	if err := repo.Init(ctx); err != nil {
 		log.Fatalf("failed to initialize repository: %v", err)
 	}
 

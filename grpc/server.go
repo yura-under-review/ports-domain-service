@@ -28,7 +28,7 @@ func (srv *Server) Run(ctx context.Context, wg *sync.WaitGroup) error {
 
 	l, err := net.Listen("tcp", srv.addr)
 	if err != nil {
-		return fmt.Errorf("failed to listen: %v", err)
+		return fmt.Errorf("failed to listen: %w", err)
 	}
 
 	srv.s = grpc.NewServer()

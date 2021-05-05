@@ -7,8 +7,27 @@ import (
 
 func ToModelPort(src *api.PortInfo) *models.PortInfo {
 
-	// TODO: implement
-	return &models.PortInfo{}
+	var coord *models.Coordinate
+	if src.Coordinate != nil {
+		coord = &models.Coordinate{
+			Latitude:  src.Coordinate.Latitude,
+			Longitude: src.Coordinate.Longitude,
+		}
+	}
+
+	return &models.PortInfo{
+		Symbol:     src.Symbol,
+		Name:       src.Name,
+		City:       src.City,
+		Province:   src.Province,
+		Country:    src.Country,
+		Alias:      src.Alias,
+		Regions:    src.Regions,
+		Timezones:  src.Timezones,
+		Unlocks:    src.Unlocks,
+		Code:       src.Code,
+		Coordinate: coord,
+	}
 }
 
 func ToModelPorts(src []*api.PortInfo) []*models.PortInfo {

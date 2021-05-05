@@ -13,7 +13,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./local/postgresql/data:/var/lib/postgresql/data
+      - $PWD/local/postgresql/data:/var/lib/postgresql/data
       - $PWD/initdb.sql:/docker-entrypoint-initdb.d/init_tables.sql
 
   pgadmin:
@@ -25,7 +25,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
 
     volumes:
-      - $PWD/pgadmin:/var/lib/pgadmin
+      - $PWD/local/pgadmin:/var/lib/pgadmin
 
     ports:
       - 5050:80
