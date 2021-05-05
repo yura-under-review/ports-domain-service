@@ -1,0 +1,43 @@
+syntax = "proto3";
+option go_package = "api";
+package ports_domain_service;
+
+message Coordinate {
+    float Latitude = 1;
+    float Longitude = 2;
+}
+
+message PortInfo {
+  string symbol = 1;
+  string name = 2;
+  string city = 3;
+  string province = 4;
+  string country = 5;
+  repeated string alias = 6;
+  repeated string regions = 7;
+  repeated string timezones = 8;
+  repeated string unlocks = 9;
+  string code = 10;
+  optional Coordinate coordinate = 11;
+}
+
+message PortInfoRequest {
+  PortInfo port = 1;
+}
+
+message PortInfoResponse {
+  string message = 1;
+}
+
+message BatchUpsertPortsRequest {
+  repeated PortInfo ports = 1;
+}
+
+message BatchUpsertPortsResponse {
+  repeated string failedPorts = 1;
+}
+
+service PortsDomainService {
+  rpc UpsertPort(PortInfoRequest) returns (PortInfoResponse);
+  rpc BatchUpsertPorts(BatchUpsertPortsRequest) returns (BatchUpsertPortsResponse);
+}
